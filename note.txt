@@ -1,0 +1,4 @@
+source /home/ubuntu/Documents/daheng_ros_x86/devel/setup.bash
+source /home/ubuntu/Documents/tunnelplane/devel/setup.bash
+source /home/ubuntu/Documents/celex4_ros/devel/setup.bash
+source /home/ubuntu/Documents/celex5/devel/setup.bash
