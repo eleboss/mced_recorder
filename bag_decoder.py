@@ -19,9 +19,9 @@ def mkdir(path):
 ev_width = 1280 #x
 ev_height = 800 #y
 
-dataset_path = '/home/eleboss/dvs_dataset/mced/'
+dataset_path = '/home/eleboss/dvs_dataset/lip_language/'
 
-entries = os.listdir('/home/eleboss/dvs_dataset/mced/')
+entries = os.listdir(dataset_path)
 for files in entries:
     if files.endswith(".bag"):
         file_name = os.path.splitext(files)[0]
@@ -37,7 +37,7 @@ for files in entries:
                 for i in msg.events:
                     ev_x = i.x
                     ev_y = i.y
-                    ev_p = int(i.polarity == 'True')
+                    ev_p = int(i.polarity)
                     ev_t = i.ts.secs + i.ts.nsecs * 1e-9    
                     text_file.write('%f' % (ev_t) + " " + str(ev_x) + " " + str(ev_y) + " " + str(ev_p) + "\n") 
 
