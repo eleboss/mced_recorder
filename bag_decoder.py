@@ -31,20 +31,19 @@ for files in entries:
         # transfer rosbag to txt
         with open(dataset_path + file_name + "/" + "events" + ".txt", "w") as text_file:
             for topic, msg, t in bag.read_messages(topics=['/celex/events']):
-                print topic,t
+                print topic,t.secs,".",t.nsecs
                 # print msg.events[0].polarity
-                
                 for i in msg.events:
                     ev_x = i.x
                     ev_y = i.y
                     ev_p = int(i.polarity)
-                    ev_t = i.ts.secs + i.ts.nsecs * 1e-9    
+                    ev_t = float(str(i.ts.secs)[-5:]+ '.' + str(i.ts.nsecs)) 
                     text_file.write('%f' % (ev_t) + " " + str(ev_x) + " " + str(ev_y) + " " + str(ev_p) + "\n") 
 
         
         for topic, msg, t in bag.read_messages(topics=['/cam/image_raw']):
-            print topic,t
-            img_time = msg.header.stamp.secs + msg.header.stamp.nsecs * 1e-9     
+            print topic,t   
+            img_time = float(str(msg.header.stamp.secs)[-5:]+ '.' + str(msg.header.stamp.nsecs)) 
             cv_image = CvBridge().imgmsg_to_cv2(msg, "bgr8")
             cv2.imwrite(dataset_path + file_name + "/image/" + str(img_time) + ".png", cv_image)
         bag.close()
