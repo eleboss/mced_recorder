@@ -27,7 +27,6 @@ for files in entries:
         file_name = os.path.splitext(files)[0]
         bag = rosbag.Bag(dataset_path+files)
         mkdir(dataset_path + file_name)
-        mkdir(dataset_path + file_name + "/image")
         # transfer rosbag to txt
         with open(dataset_path + file_name + "/" + "events" + ".txt", "w") as text_file:
             for topic, msg, t in bag.read_messages(topics=['/celex/events']):
@@ -40,10 +39,45 @@ for files in entries:
                     ev_t = float(str(i.ts.secs)[-5:]+ '.' + str(i.ts.nsecs)) 
                     text_file.write('%f' % (ev_t) + " " + str(ev_x) + " " + str(ev_y) + " " + str(ev_p) + "\n") 
 
+        # process images
+        mkdir(dataset_path + file_name + "/rgb")
+        frame_counter = 0
+        with open(dataset_path + file_name + "/" + "rgb_time" + ".txt", "w") as text_file:
+            for topic, msg, t in bag.read_messages(topics=['/cam/image_raw']):
+                print topic,t   
+                
+                cv_image = CvBridge().imgmsg_to_cv2(msg, "bgr8")
+                cv2.imwrite(dataset_path + file_name + "/rgb/" + "%09d" % frame_counter + ".png", cv_image)
+
+                img_time = float(str(msg.header.stamp.secs)[-5:]+ '.' + str(msg.header.stamp.nsecs)) 
+                text_file.write("%09d" % frame_counter + " " + str(img_time) + "\n")
+                frame_counter = frame_counter + 1 
+
+        mkdir(dataset_path + file_name + "/infrared")
+        frame_counter = 0
+        with open(dataset_path + file_name + "/" + "infrared_time" + ".txt", "w") as text_file:
+            for topic, msg, t in bag.read_messages(topics=['/infrared/image_raw']):
+                print topic,t   
+                
+                cv_image = CvBridge().imgmsg_to_cv2(msg, "bgr8")
+                cv2.imwrite(dataset_path + file_name + "/infrared/" + "%09d" % frame_counter + ".png", cv_image)
+
+                img_time = float(str(msg.header.stamp.secs)[-5:]+ '.' + str(msg.header.stamp.nsecs)) 
+                text_file.write("%09d" % frame_counter + " " + str(img_time) + "\n")
+                frame_counter = frame_counter + 1 
+
+        mkdir(dataset_path + file_name + "/ev_frame")
+        frame_counter = 0
+        with open(dataset_path + file_name + "/" + "ev_frame_time" + ".txt", "w") as text_file:
+            for topic, msg, t in bag.read_messages(topics=['/celex/image_raw']):
+                print topic,t   
+                
+                cv_image = CvBridge().imgmsg_to_cv2(msg, "bgr8")
+                cv2.imwrite(dataset_path + file_name + "/ev_frame/" + "%09d" % frame_counter + ".png", cv_image)
+
+                img_time = float(str(msg.header.stamp.secs)[-5:]+ '.' + str(msg.header.stamp.nsecs)) 
+                text_file.write("%09d" % frame_counter + " " + str(img_time) + "\n")
+                frame_counter = frame_counter + 1 
         
-        for topic, msg, t in bag.read_messages(topics=['/cam/image_raw']):
-            print topic,t   
-            img_time = float(str(msg.header.stamp.secs)[-5:]+ '.' + str(msg.header.stamp.nsecs)) 
-            cv_image = CvBridge().imgmsg_to_cv2(msg, "bgr8")
-            cv2.imwrite(dataset_path + file_name + "/image/" + str(img_time) + ".png", cv_image)
+
         bag.close()
