@@ -10,16 +10,16 @@ def mkdir(path):
     isExists=os.path.exists(path)
     if not isExists:
         os.makedirs(path) 
-        print path+'Crate path'
+        print(path+'Crate path')
         return True
     else:
-        print path+'invaild path'
+        print(path+'invaild path')
         return False
 
 ev_width = 1280 #x
 ev_height = 800 #y
 
-dataset_path = './'
+dataset_path = '/home/pengrui/dvs_dataset/road/'
 
 entries = os.listdir(dataset_path)
 for files in entries:
@@ -30,7 +30,7 @@ for files in entries:
         # transfer rosbag to txt
         with open(dataset_path + file_name + "/" + "events" + ".txt", "w") as text_file:
             for topic, msg, t in bag.read_messages(topics=['/celex/events']):
-                print topic,t.secs,".",t.nsecs
+                print(topic,t.secs,".",t.nsecs)
                 # print msg.events[0].polarity
                 for i in msg.events:
                     ev_x = i.x
@@ -44,7 +44,7 @@ for files in entries:
         frame_counter = 0
         with open(dataset_path + file_name + "/" + "rgb_time" + ".txt", "w") as text_file:
             for topic, msg, t in bag.read_messages(topics=['/cam/image_raw']):
-                print topic,t   
+                print(topic,t)
                 
                 cv_image = CvBridge().imgmsg_to_cv2(msg, "bgr8")
                 cv2.imwrite(dataset_path + file_name + "/rgb/" + "%09d" % frame_counter + ".png", cv_image)
@@ -57,7 +57,7 @@ for files in entries:
         frame_counter = 0
         with open(dataset_path + file_name + "/" + "infrared_time" + ".txt", "w") as text_file:
             for topic, msg, t in bag.read_messages(topics=['/infrared/image_raw']):
-                print topic,t   
+                print(topic,t) 
                 
                 cv_image = CvBridge().imgmsg_to_cv2(msg, "bgr8")
                 cv2.imwrite(dataset_path + file_name + "/infrared/" + "%09d" % frame_counter + ".png", cv_image)
@@ -70,7 +70,7 @@ for files in entries:
         frame_counter = 0
         with open(dataset_path + file_name + "/" + "ev_frame_time" + ".txt", "w") as text_file:
             for topic, msg, t in bag.read_messages(topics=['/celex/image_raw']):
-                print topic,t   
+                print(topic,t)   
                 
                 cv_image = CvBridge().imgmsg_to_cv2(msg, "bgr8")
                 cv2.imwrite(dataset_path + file_name + "/ev_frame/" + "%09d" % frame_counter + ".png", cv_image)
