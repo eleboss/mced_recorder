@@ -6,7 +6,7 @@ import os
 import sys
 import txt_loader
  
-dataset_path = '/home/eleboss/dvs_dataset/lip_language/'
+dataset_path = '/home/eleboss/dvs_dataset/road/'
 
 def mkdir(path):
     
@@ -23,7 +23,7 @@ def mkdir(path):
 def main(): 
     for subdir, dirs, files in os.walk(dataset_path):
         for file in files:
-            if file.endswith(".txt"):
+            if file.endswith("events.txt"):
                 print "##############################################"
                 print "loading... ",os.path.join(subdir, file)
                 events = txt_loader.event_txt_loader(os.path.join(subdir, file))
