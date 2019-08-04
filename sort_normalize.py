@@ -8,6 +8,9 @@ import txt_loader
  
 dataset_path = '/home/eleboss/dvs_dataset/road/'
 
+
+START_AT_ZERO = 0
+
 def mkdir(path):
     
     import os
@@ -33,7 +36,10 @@ def main():
                     if i[0] - last_ev < 0:
                         print "find reverse"
                     last_ev = i[0]
-                init_timestamp = sorted_event[0][0]
+                if START_AT_ZERO:
+                    init_timestamp = sorted_event[0][0]
+                else:
+                    init_timestamp = 0
 
                 with open(os.path.join(subdir, file), "w") as text_file:
                     for ev in sorted_event:
