@@ -19,7 +19,7 @@ def mkdir(path):
 ev_width = 1280 #x
 ev_height = 800 #y
 
-dataset_path = '/home/eleboss/dvs_dataset/road/'
+dataset_path = '/home/ubuntu/dvs_dataset/road/'
 
 entries = os.listdir(dataset_path)
 for files in entries:
