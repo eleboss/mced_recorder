@@ -6,7 +6,7 @@ import os
 import sys
 import txt_loader
  
-dataset_path = '/home/eleboss/dvs_dataset/road/'
+dataset_path = '/home/ubuntu/dvs_dataset/road/'
 
 
 START_AT_ZERO = 0
@@ -34,7 +34,9 @@ def main():
                 sorted_event = sorted(events, key=lambda x: x[0])
                 for i in sorted_event:
                     if i[0] - last_ev < 0:
-                        print "find reverse"
+                        print "find reverse, sorting fail!"
+                    if i[0] - last_ev > 0.1:
+                        print "find space too large!",i[0] - last_ev,i[0]
                     last_ev = i[0]
                 if START_AT_ZERO:
                     init_timestamp = sorted_event[0][0]
