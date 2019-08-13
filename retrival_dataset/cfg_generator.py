@@ -36,7 +36,7 @@ def main():
         with open(cfg_path + "ukbench" + "%05d" % i + ".conf", "w") as text_file:
             for index, line in enumerate(lines):
                 text_file.write(line) 
-            text_file.write("--path_to_output_bag=" + output_path + "ukbench" + "%05d" % i + ".bag" + "\n") 
+            ztext_file.write("--path_to_output_bag=" + output_path + "ukbench" + "%05d" % i + ".bag" + "\n") 
             text_file.write("--renderer_texture=/home/eleboss/dvs_dataset/ukbench/ukbench" + "%05d" % i + ".jpg" + "\n") 
 
 if __name__ == "__main__":
